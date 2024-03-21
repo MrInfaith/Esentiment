@@ -1,3 +1,39 @@
-.custom-search-input {
+.navbar .custom-search-input {
     width: 300px; /* Adjust width as needed */
 }
+
+.scroll-view-container {
+    max-height: 200px;
+    overflow-x: scroll;
+    white-space: nowrap;
+  }
+
+  .scroll-view-container img {
+    max-height: 350px;
+    margin-right: 50px;
+  }
+  .scroll-view-container {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .scroll-view-container img {
+          padding: 5px /* Adjust the padding value as needed */
+      }
+
+  .scroll-view-container img {
+    max-height: 150px;
+    margin-bottom: 10px;
+  }
+
+  /* Larger padding between scroll views */
+  .section-spacing {
+    margin-bottom: 100px;
+  }
+
+  .navbar-brand {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+  }
