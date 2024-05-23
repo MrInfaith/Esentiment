@@ -1,40 +1,52 @@
-import requests
-from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver import chrome 
+from  selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+import time
 import pandas as pd
-class home:
-    def snapdeal(self):
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36'
-        }
-        r = requests.get(url='https://www.snapdeal.com/', headers=headers)
-        htmlcontent = r.content
-        soup = BeautifulSoup(htmlcontent, 'html.parser')
-        divs = soup.find_all('div', {'class': 'trendingProd product-relative dp-widget-link col-xs-5 favDp'})
-        links = []
-        imgs = []
-        for i in divs:
-            link = i.find('a', {'class': 'product-card dp-widget-link'})
-            links.append(link['href'])
-            div_img = link.find('div', {'class': 'product-img'})
-            img = div_img.find('img', {'class': 'lazy-load'})
-            imgs.append(img['data-src'])
-        df=pd.DataFrame({'url':imgs,'link':links})
-        return df
-#     # def flipkart_deal(self):
-# url = "https://www.flipkart.com"
-# headers = ({
-#     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.46"})
-# r = requests.get(url, headers=headers)
-# htmlcontent = r.content
-# soup = BeautifulSoup(htmlcontent, 'html.parser')
-# images = soup.find_all('img', {'class': '_396cs4'})
-# img_names=soup.find_all('div',{'class':'_3LU4EM'})
-# images_url = []
-# names = []
-# for image in images:
-#     images_url.append(image['src'])
-#     names.append(image['alt'].split('(')[0])
-# img_url = images_url[10:]
-# names = names[10:]
-# df=pd.DataFrame({'name':names,'url':img_url})
-# print(df)
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+class Search():
+    def amazon_product(self,product_name):
+        if product_name!="":
+            options=webdriver.ChromeOptions()
+            options.add_experimental_option("detach",True)
+            driver=webdriver.Chrome(options=options,service=Service(ChromeDriverManager().install()))
+            driver.get('https://www.amazon.in/')
+            box=driver.find_element(By.XPATH,'//*[@id="twotabsearchtextbox"]')
+            box.send_keys(product_name)
+            box.send_keys(Keys.ENTER)
+            url=[]
+            images=[]
+            # link to go to page
+            box=driver.find_elements(By.XPATH,"//a[@class='a-link-normal s-no-outline']")
+            for i in box:
+                link=i.get_attribute('href')
+                url.append(link)
+            # link of product images
+            img=driver.find_elements(By.XPATH,"//img[@class='s-image']")
+            for i in img:
+                images.append(i.get_attribute('src'))
+            # prices of the product
+            prices=[]
+            price=driver.find_elements(By.XPATH,"//span[@class='a-price-whole']")
+            for i in price:
+                prices.append(i.text)
+            images=images[0:6]
+            url=url[0:6]
+            prices=prices[3:9]
+            #name of the product
+            names=[]
+            name=driver.find_elements(By.XPATH,"//span[@class='a-size-medium a-color-base a-text-normal']")
+            for i in name:
+                names.append(i.text)
+            names=names[0:6]
+            df=pd.DataFrame({'name': names ,'price':prices,'page':url,'img':images})
+            driver.close()
+            return df
+ 
+                
+
+
+
+

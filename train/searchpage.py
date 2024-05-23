@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import re
-class Search:
+class sadearch:
     def amazon_product_name(self,search_text=""):
         if search_text != "":
             url = f"https://www.techbargains.com/search?search={search_text}"
@@ -35,8 +35,8 @@ class Search:
                     if match:
                         percentage = match.group(0)
                         prices.append(percentage)
-
-        df = pd.DataFrame({'name': names, 'prices': prices, 'url': img_url, 'page_link': url})
+        mini=min({len(names),len(prices),len(img_url),len(url)})
+        df = pd.DataFrame({'name': names[0:mini], 'prices': prices[0:mini], 'url': img_url[0:mini], 'page_link': url[0:mini]})
         return df
 # # def flipkart_product_name(self,search_text):
 # search_text='laptop'

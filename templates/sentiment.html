@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}" />
+</head>
+<body>
+    <!-- Image and text -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="logo">
+          <img src="https://cdn-icons-png.flaticon.com/512/4290/4290854.png" width="30" height="30" class="d-inline-block align-top" alt="Logo">
+        </div class="iconName">
+        <h5 style="color: #ffd900e3;">Shopping Now</h5>
+      </nav>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Index</th>
+            <th scope="col">REVIEWS</th>
+            <th scope="col">SENTIMENTS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {% for n in review%}
+            <th scope="row">{{loop.index}}</th>
+            <td>{{n}}</td>
+            <td>{{sent[loop.index0]}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+{% include "footer.html" %}

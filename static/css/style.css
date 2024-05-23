@@ -1,7 +1,7 @@
+
 .navbar .custom-search-input {
     width: 300px; /* Adjust width as needed */
 }
-
 .scroll-view-container {
     max-height: 200px;
     overflow-x: scroll;
@@ -24,6 +24,7 @@
     max-height: 150px;
     margin-bottom: 10px;
   }
+  
 
   /* Larger padding between scroll views */
   .section-spacing {
@@ -37,3 +38,4 @@
     display: flex;
     align-items: center;
   }
+  @media (max-width: 767.98px) { .border-sm-start-none { border-left: none !important; } }

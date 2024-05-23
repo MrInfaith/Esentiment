@@ -1,35 +1,35 @@
 from flask import *
-from train.homepage import home
-from train.searchpage import Search
+from train.homepage import Search
+from train.reviews import Extract
+from train.Sentiment import SentimentAnalysis
 app=Flask(__name__)
-# home details
-hm=home()
-flipkart_df=hm.snapdeal()
-# creating of objects of search page
+# search class object  for product
 dt=Search()
-
-# path declarations
+# Extract class object for reviews extraction
+rev=Extract()
+# object of sentimentanalysis
+SA=SentimentAnalysis()
+# path declarations of home page 
 @app.route('/')
+def login():
+    return render_template('login.html')
+@app.route('/home')
 def Home():
-    flipkart=flipkart_df['url']
-    url=flipkart_df['link']
-    return render_template('home.html',flipImage=flipkart,flipurl=url)
-@app.route('/login')
-def Login():
-    pass
-@app.route('/register')
-def Register():
-    pass
-@app.route('/logout')
-def logout():
-    pass
-@app.route('/details')
+    return render_template('home.html')
+#path declarations of details page 
+@app.route('/details',methods=['POST'])
 def details():
-    index=request.args.get('flipdeat')
-    return render_template('details.html')
-@app.route('/sentiments')
+    search_query=request.form['search']
+    details=dt.amazon_product(search_query)
+    return render_template('details.html',details=details)
+#path declarations of review and sentiment page
+@app.route('/sentiments',methods=['POST'])
 def sentiments():
-    pass
-
+    buy_link = request.form['buy_link']
+    review=rev.review_extract(buy_link)
+    sent=[]
+    for i in review:
+        sent.append(SA.sentiment_analysis(i))
+    return render_template('sentiment.html',review=review,sent=sent)
 if __name__=="__main__":
     app.run(debug=True)
